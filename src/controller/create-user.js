@@ -1,6 +1,7 @@
 import { CreateUserUseCase } from '../use-cases/create-user.js'
 import validator from 'validator'
 import { badRequest, created, serverError } from './helpers.js'
+import { EmailAlreadyInUserError } from '../errors/users.js'
 
 export class CreateUserControler {
     async execute(httpRequest) {
@@ -37,7 +38,6 @@ export class CreateUserControler {
                     message: `Invalid e-mail. Please provide a valid one.`,
                 })
             }
-            // TODOcheck if the email is unique
 
             // call use case
 
@@ -48,6 +48,9 @@ export class CreateUserControler {
             //return status code
             return created(createdUser)
         } catch (error) {
+            if (error instanceof EmailAlreadyInUserError) {
+                return badRequest({ message: error.message })
+            }
             console.error(error)
             return serverError()
         }
