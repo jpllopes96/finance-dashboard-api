@@ -16,7 +16,10 @@ export class UpdateUserUseCase {
                     updateUserParam.email,
                 )
 
-            if (userWithProvidadedEmail) {
+            if (
+                userWithProvidadedEmail &&
+                userWithProvidadedEmail.id != userId
+            ) {
                 throw new EmailAlreadyInUserError(updateUserParam.email)
             }
         }
