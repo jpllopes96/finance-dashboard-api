@@ -4,11 +4,20 @@ import {
     CreateUserControler,
     GetUserByIdController,
     UpdateUserController,
+    DeleteUserController,
 } from './src/controller/index.js'
 
 const app = express()
 
 app.use(express.json())
+
+app.get('/api/user/:userId', async (request, response) => {
+    const getUserByIdController = new GetUserByIdController()
+
+    const { statusCode, body } = await getUserByIdController.execute(request)
+
+    response.status(statusCode).send(body)
+})
 
 app.post('/api/users', async (request, response) => {
     const createUserControler = new CreateUserControler()
@@ -24,10 +33,9 @@ app.patch('/api/user/:userId', async (request, response) => {
     response.status(statusCode).send(body)
 })
 
-app.get('/api/user/:userId', async (request, response) => {
-    const getUserByIdController = new GetUserByIdController()
-
-    const { statusCode, body } = await getUserByIdController.execute(request)
+app.delete('/api/user/:userId', async (request, response) => {
+    const deleteUserController = new DeleteUserController()
+    const { statusCode, body } = await deleteUserController.execute(request)
 
     response.status(statusCode).send(body)
 })
