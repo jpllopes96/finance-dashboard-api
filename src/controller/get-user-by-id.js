@@ -2,7 +2,7 @@ import { GetUserByIdUseCase } from '../use-cases/get-user-by-id.js'
 import {
     checkIfIdIsValid,
     InvalidIdResponse,
-    notFound,
+    userNotFoundResponse,
     ok,
     serverError,
 } from './helpers/index.js'
@@ -21,9 +21,7 @@ export class GetUserByIdController {
             )
 
             if (!user) {
-                return notFound({
-                    message: `User not found with ID: ${httpRequest.params.userId}`,
-                })
+                return userNotFoundResponse()
             }
             return ok(user)
         } catch (error) {
