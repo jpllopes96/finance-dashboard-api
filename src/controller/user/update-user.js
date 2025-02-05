@@ -1,4 +1,4 @@
-import { EmailAlreadyInUserError } from '../errors/users.js'
+import { EmailAlreadyInUserError } from '../../errors/users.js'
 import {
     checkIfEmaailIsValid,
     checkIfIdIsValid,
@@ -9,7 +9,7 @@ import {
     serverError,
     badRequest,
     ok,
-} from './helpers/index.js'
+} from '../helpers/index.js'
 export class UpdateUserController {
     constructor(updateUserUseCase) {
         this.updateUserUseCase = updateUserUseCase

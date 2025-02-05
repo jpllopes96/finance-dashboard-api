@@ -1,4 +1,4 @@
-import { EmailAlreadyInUserError } from '../errors/users.js'
+import { EmailAlreadyInUserError } from '../../errors/users.js'
 import bcrypt from 'bcrypt'
 
 export class UpdateUserUseCase {
