@@ -20,7 +20,10 @@ export class CreateTransactionController {
             const requiredFields = ['user_id', 'name', 'date', 'amount', 'type']
 
             for (const field of requiredFields) {
-                if (!params[field] || params[field].trim().length == 0) {
+                if (
+                    !params[field] ||
+                    params[field].toString().trim().length == 0
+                ) {
                     return badRequest({
                         message: `The field ${field} is required`,
                     })
@@ -55,7 +58,7 @@ export class CreateTransactionController {
 
             const type = params.type.trim().toUpperCase()
 
-            const typeIsValid = !['EARNING', 'EXPENSE', 'INVESTMENT'].includes(
+            const typeIsValid = ['EARNING', 'EXPENSE', 'INVESTMENT'].includes(
                 type,
             )
 
