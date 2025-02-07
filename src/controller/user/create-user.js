@@ -8,6 +8,7 @@ import {
     created,
     validateRequiredFields,
     serverError,
+    requiredFieldIsMissingResponse,
 } from '../helpers/index.js'
 
 export class CreateUserControler {
@@ -30,9 +31,7 @@ export class CreateUserControler {
                 validateRequiredFields(params, requiredFields)
 
             if (!requiredFieldsWereProvided) {
-                return badRequest({
-                    message: `The field ${missingField} is required`,
-                })
+                return requiredFieldIsMissingResponse(missingField)
             }
 
             //check password lenght
