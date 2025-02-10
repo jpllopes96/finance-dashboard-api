@@ -14,7 +14,7 @@ export class GetTransactionByUserIdController {
     }
     async execute(httpRequest) {
         try {
-            const userId = httpRequest.query.GetTransactionByUserIdController
+            const userId = httpRequest.query.userId
             if (!userId) {
                 return requiredFieldIsMissingResponse('userId')
             }
