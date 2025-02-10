@@ -38,7 +38,7 @@ export class UpdateTransactionController {
             if (params.amount) {
                 const amountIsValid = checkIfAmountIsValid(params.amount)
 
-                if (amountIsValid) {
+                if (!amountIsValid) {
                     return invalidAmountResponse()
                 }
             }
