@@ -40,7 +40,7 @@ app.delete('/api/user/:userId', async (request, response) => {
     response.status(statusCode).send(body)
 })
 
-app.post('/api/transaction', async (request, response) => {
+app.post('/api/transactions', async (request, response) => {
     const createTransactionController = makeCreateTransactionController()
     const { statusCode, body } =
         await createTransactionController.execute(request)
