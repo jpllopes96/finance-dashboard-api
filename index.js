@@ -10,6 +10,7 @@ import {
 import {
     makeCreateTransactionController,
     makeGetTransactionsByUserId,
+    makeUpdateTransaction,
 } from './src/factories/controllers/transaction.js'
 
 const app = express()
@@ -54,6 +55,14 @@ app.post('/api/transactions', async (request, response) => {
     const createTransactionController = makeCreateTransactionController()
     const { statusCode, body } =
         await createTransactionController.execute(request)
+
+    response.status(statusCode).send(body)
+})
+
+app.patch('/api/transaction/:transactionId', async (request, response) => {
+    const updateTransactionController = makeUpdateTransaction()
+    const { statusCode, body } =
+        await updateTransactionController.execute(request)
 
     response.status(statusCode).send(body)
 })
