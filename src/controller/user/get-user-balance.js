@@ -7,14 +7,15 @@ import {
 } from '../helpers/index.js'
 import { UserNotFoundError } from '../../errors/users.js'
 
-export class GetUserByIdController {
+export class GetUserBalanceController {
     constructor(getUserBalanceUseCase) {
         this.getUserBalanceUseCase = getUserBalanceUseCase
     }
 
     async execute(httpRequest) {
         try {
-            const userId = checkIfIdIsValid(httpRequest.param.userId)
+            const userId = httpRequest.params.userId
+
             const isIdValid = checkIfIdIsValid(userId)
 
             if (!isIdValid) {
@@ -26,7 +27,7 @@ export class GetUserByIdController {
             return ok(balance)
         } catch (error) {
             if (error instanceof UserNotFoundError) {
-                return userNotFoundResponse
+                return userNotFoundResponse()
             }
             console.error(error)
             return serverError()

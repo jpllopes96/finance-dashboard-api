@@ -18,7 +18,9 @@ export class PostgresGetUserBalanceRepository {
         )
         return {
             userId,
-            ...balance,
+            ...balance[0],
         }
     }
 }
+
+// "SELECT SUM(CASE WHEN type = 'EARNING' THEN amount ELSE 0 END) AS earnings, SUM(CASE WHEN type = 'EXPENSE' THEN amount ELSE 0 END) AS expenses, SUM(CASE WHEN type = 'INVESTMENTS' THEN amount ELSE 0 END) AS investments, (SUM(CASE WHEN type = 'EARNING' THEN amount ELSE 0 END) - SUM(CASE WHEN type = 'EXPENSE' THEN amount ELSE 0 END) - SUM(CASE WHEN type = 'INVESTMENTS' THEN amount ELSE 0 END)) as balance FROM transactions WHERE user_id = $1;",

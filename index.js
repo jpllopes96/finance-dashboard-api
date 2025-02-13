@@ -5,6 +5,7 @@ import {
     makeCreateUserController,
     makeGetUserController,
     makeDeleteUserController,
+    makeGetUserBalanceController,
 } from './src/factories/controllers/user.js'
 
 import {
@@ -17,9 +18,16 @@ const app = express()
 
 app.use(express.json())
 
-app.get('/api/user/:userId', async (request, response) => {
+app.get('/api/users/:userId', async (request, response) => {
     const getUserByIdController = makeGetUserController()
     const { statusCode, body } = await getUserByIdController.execute(request)
+
+    response.status(statusCode).send(body)
+})
+
+app.get('/api/users/:userId/balance', async (request, response) => {
+    const getUseBalanceController = makeGetUserBalanceController()
+    const { statusCode, body } = await getUseBalanceController.execute(request)
 
     response.status(statusCode).send(body)
 })
@@ -31,13 +39,13 @@ app.post('/api/users', async (request, response) => {
     response.status(statusCode).send(body)
 })
 
-app.patch('/api/user/:userId', async (request, response) => {
+app.patch('/api/users/:userId', async (request, response) => {
     const updateUserController = makeUpdateUserController()
     const { statusCode, body } = await updateUserController.execute(request)
     response.status(statusCode).send(body)
 })
 
-app.delete('/api/user/:userId', async (request, response) => {
+app.delete('/api/users/:userId', async (request, response) => {
     const deleteUserControler = makeDeleteUserController()
     const { statusCode, body } = await deleteUserControler.execute(request)
 
