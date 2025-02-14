@@ -7,8 +7,6 @@ export class GetUserBalanceUseCase {
     }
 
     async execute(params) {
-        console.log(params.userId)
-
         const user = await this.getUserByIdRepository.execute(params.userId)
 
         if (!user) {
