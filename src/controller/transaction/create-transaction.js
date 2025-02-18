@@ -1,15 +1,6 @@
-import {
-    serverError,
-    invalidTypeResponse,
-    checkIfIdIsValid,
-    InvalidIdResponse,
-    created,
-    validateRequiredFields,
-    requiredFieldIsMissingResponse,
-    checkIfAmountIsValid,
-    checkIfTypeIsValid,
-    invalidAmountResponse,
-} from '../helpers/index.js'
+import { serverError, created, badRequest } from '../helpers/index.js'
+import { createTransactionSchema } from '../../schemas/transaction.js'
+import { ZodError } from 'zod'
 
 export class CreateTransactionController {
     constructor(createTransactionUseCase) {
@@ -19,42 +10,21 @@ export class CreateTransactionController {
     async execute(httpRequest) {
         try {
             const params = httpRequest.body
-
-            const requiredFields = ['user_id', 'name', 'date', 'amount', 'type']
-
-            const { ok: requiredFieldsWereProvided, missingField } =
-                validateRequiredFields(params, requiredFields)
-
-            if (!requiredFieldsWereProvided) {
-                return requiredFieldIsMissingResponse(missingField)
+            if (typeof params.type === 'string') {
+                params.type = params.type.toUpperCase()
             }
+            await createTransactionSchema.parseAsync(params)
 
-            const userIdIsValid = checkIfIdIsValid(params.user_id)
-            if (!userIdIsValid) {
-                return InvalidIdResponse()
-            }
-
-            const amountIsVaid = checkIfAmountIsValid(params.amount)
-
-            if (!amountIsVaid) {
-                return invalidAmountResponse()
-            }
-
-            const type = params.type.trim().toUpperCase()
-
-            const typeIsValid = checkIfTypeIsValid(type)
-
-            if (!typeIsValid) {
-                return invalidTypeResponse()
-            }
-
-            const transaction = await this.createTransactionUseCase.execute({
-                ...params,
-                type,
-            })
+            const transaction =
+                await this.createTransactionUseCase.execute(params)
 
             return created(transaction)
         } catch (error) {
+            if (error instanceof ZodError) {
+                return badRequest({
+                    message: error.errors[0].message,
+                })
+            }
             console.error(error)
             return serverError()
         }
