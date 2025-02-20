@@ -17,7 +17,7 @@ import {
 
 import {
     GetUserByIdController,
-    CreateUserControler,
+    CreateUserController,
     UpdateUserController,
     DeleteUserController,
     GetUserBalanceController,
@@ -41,7 +41,7 @@ export const makeCreateUserController = () => {
         createUserRepository,
     )
 
-    const createUserControler = new CreateUserControler(createUserUseCase)
+    const createUserControler = new CreateUserController(createUserUseCase)
 
     return createUserControler
 }

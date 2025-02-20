@@ -3,7 +3,7 @@ import { badRequest, created, serverError } from '../helpers/index.js'
 import { createUserSchema } from '../../schemas/index.js'
 import { ZodError } from 'zod'
 
-export class CreateUserControler {
+export class CreateUserController {
     constructor(createUserUseCase) {
         this.createUserUseCase = createUserUseCase
     }
