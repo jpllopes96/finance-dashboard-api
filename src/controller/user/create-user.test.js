@@ -55,9 +55,67 @@ describe('Create User Controller', () => {
         const createUserController = new CreateUserController(createUserUseCase)
         const httpRequest = {
             body: {
-                first_name: 'joao',
+                first_name: 'Joao',
                 email: 'joao@email.com',
                 password: '123456',
+            },
+        }
+
+        //act
+        const result = await createUserController.execute(httpRequest)
+
+        //accert
+
+        expect(result.statusCode).toBe(400)
+    })
+
+    it('should return 400 if email is not provided', async () => {
+        const createUserUseCase = new CreateUserUseCaseStub()
+        const createUserController = new CreateUserController(createUserUseCase)
+        const httpRequest = {
+            body: {
+                first_name: 'Joao',
+                last_name: 'Lopes',
+                password: '123456',
+            },
+        }
+
+        //act
+        const result = await createUserController.execute(httpRequest)
+
+        //accert
+
+        expect(result.statusCode).toBe(400)
+    })
+
+    it('should return 400 if email is invalid', async () => {
+        const createUserUseCase = new CreateUserUseCaseStub()
+        const createUserController = new CreateUserController(createUserUseCase)
+        const httpRequest = {
+            body: {
+                first_name: 'Joao',
+                last_name: 'Lopes',
+                email: 'email@nodomain',
+                password: '123456',
+            },
+        }
+
+        //act
+        const result = await createUserController.execute(httpRequest)
+
+        //accert
+
+        expect(result.statusCode).toBe(400)
+    })
+
+    it('should return 400 if password is not provided', async () => {
+        const createUserUseCase = new CreateUserUseCaseStub()
+        const createUserController = new CreateUserController(createUserUseCase)
+        const httpRequest = {
+            body: {
+                first_name: 'Joao',
+                last_name: 'Lopes',
+                email: 'joao@email.com',
             },
         }
 
