@@ -116,6 +116,26 @@ describe('Create User Controller', () => {
                 first_name: 'Joao',
                 last_name: 'Lopes',
                 email: 'joao@email.com',
+                password: '123',
+            },
+        }
+
+        //act
+        const result = await createUserController.execute(httpRequest)
+
+        //accert
+
+        expect(result.statusCode).toBe(400)
+    })
+
+    it('should return 400 if passwrod is less than 6 characters', async () => {
+        const createUserUseCase = new CreateUserUseCaseStub()
+        const createUserController = new CreateUserController(createUserUseCase)
+        const httpRequest = {
+            body: {
+                first_name: 'Joao',
+                last_name: 'Lopes',
+                password: '123456',
             },
         }
 
