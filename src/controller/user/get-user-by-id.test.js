@@ -45,4 +45,18 @@ describe('GetUserByIdController', () => {
 
         expect(result.statusCode).toBe(400)
     })
+
+    it('should return 404 if user not found', async () => {
+        const { sut, getUserByIdUseCase } = makeSut()
+
+        jest.spyOn(getUserByIdUseCase, 'execute').mockResolvedValue(null)
+
+        const result = await sut.execute({
+            params: {
+                userId: faker.string.uuid(),
+            },
+        })
+
+        expect(result.statusCode).toBe(404)
+    })
 })
