@@ -2,13 +2,11 @@ import {
     InvalidIdResponse,
     serverError,
     checkIfIdIsValid,
-    badRequest,
-    checkIfAmountIsValid,
-    invalidAmountResponse,
-    checkIfTypeIsValid,
-    invalidTypeResponse,
     ok,
+    badRequest,
 } from '../helpers/index.js'
+import { ZodError } from 'zod'
+import { updateTransactionSchema } from '../../schemas/index.js'
 
 export class UpdateTransactionController {
     constructor(updateTransactionUseCase) {
@@ -23,34 +21,7 @@ export class UpdateTransactionController {
             }
 
             const params = httpRequest.body
-            const allowedFields = ['name', 'date', 'amount', 'type']
-
-            const someFieldsNotAllowed = Object.keys(params).some(
-                (field) => !allowedFields.includes(field),
-            )
-
-            if (someFieldsNotAllowed) {
-                return badRequest({
-                    message: 'Some provided field is not allowed',
-                })
-            }
-
-            if (params.amount) {
-                const amountIsValid = checkIfAmountIsValid(params.amount)
-
-                if (!amountIsValid) {
-                    return invalidAmountResponse()
-                }
-            }
-
-            if (params.type) {
-                const typeIsValid = checkIfTypeIsValid(params.type)
-
-                if (!typeIsValid) {
-                    return invalidTypeResponse()
-                }
-            }
-
+            await updateTransactionSchema.parseAsync(params)
             const updatedTransaction =
                 await this.updateTransactionUseCase.execute(
                     httpRequest.params.transactionId,
@@ -59,6 +30,11 @@ export class UpdateTransactionController {
 
             return ok(updatedTransaction)
         } catch (error) {
+            if (error instanceof ZodError) {
+                return badRequest({
+                    message: error.errors[0].message,
+                })
+            }
             console.error(error)
             return serverError()
         }
