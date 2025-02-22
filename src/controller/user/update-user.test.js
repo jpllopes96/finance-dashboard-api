@@ -35,4 +35,18 @@ describe('UpdateUserController', () => {
 
         expect(result.statusCode).toBe(200)
     })
+
+    it('should return 400 when unallowed fiels is sent in the body', async () => {
+        const { sut } = makeSut()
+
+        const response = await sut.execute({
+            params: httpRequest.params,
+            body: {
+                ...httpRequest.body,
+                unallowed_filed: 'unallowed',
+            },
+        })
+
+        expect(response.statusCode).toBe(400)
+    })
 })
