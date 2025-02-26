@@ -40,9 +40,9 @@ describe('GetUserBalanceController', () => {
     it('should return 500 if throws error', async () => {
         const { sut, getUserBalanceUseCase } = makeSut()
 
-        jest.spyOn(getUserBalanceUseCase, 'execute').mockRejectedValueOnce(
-            new Error(),
-        )
+        import.meta.jest
+            .spyOn(getUserBalanceUseCase, 'execute')
+            .mockRejectedValueOnce(new Error())
 
         const result = await sut.execute(httpRequest)
 
