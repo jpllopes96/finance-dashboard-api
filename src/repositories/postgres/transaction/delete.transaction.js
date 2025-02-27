@@ -9,6 +9,7 @@ export class PostgresDeleteTransactionRepository {
                 },
             })
         } catch (error) {
+            console.log(error)
             return null
         }
     }

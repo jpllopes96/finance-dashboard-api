@@ -8,6 +8,7 @@ export class PostgresDeleteUserRepository {
                 },
             })
         } catch (error) {
+            console.log(error)
             return null
         }
     }
