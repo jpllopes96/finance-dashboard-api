@@ -1,7 +1,7 @@
 import { UserNotFoundError, InvalidPasswordError } from '../../errors/users.js'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
-export class loginUserUseCase {
+export class LoginUserUseCase {
     constructor(getUserByEmailRepository) {
         this.getUserByEmailRepository = getUserByEmailRepository
     }

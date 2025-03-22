@@ -13,6 +13,7 @@ import {
     UpdateUserUseCase,
     DeleteUserUseCase,
     GetUserBalanceUseCase,
+    LoginUserUseCase,
 } from '../../use-cases/index.js'
 
 import {
@@ -21,6 +22,7 @@ import {
     UpdateUserController,
     DeleteUserController,
     GetUserBalanceController,
+    LoginUserController,
 } from '../../controller/index.js'
 
 export const makeGetUserController = () => {
@@ -85,4 +87,11 @@ export const makeGetUserBalanceController = () => {
     )
 
     return getUserBalanceController
+}
+
+export const makeLoginUserController = () => {
+    const getUserByEmailRepostiory = new PostgresGetUserByEmailRepository()
+    const loginUserUseCase = new LoginUserUseCase(getUserByEmailRepostiory)
+    const loginUserController = new LoginUserController(loginUserUseCase)
+    return loginUserController
 }
