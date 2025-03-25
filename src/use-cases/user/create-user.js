@@ -1,6 +1,7 @@
 import { v4 as uuidv4 } from 'uuid'
 import bcrypt from 'bcrypt'
 import { EmailAlreadyInUserError } from '../../errors/users.js'
+import jwt from 'jsonwebtoken'
 
 export class CreateUserUseCase {
     constructor(getUserByEmailRepository, createUserRepository) {
@@ -32,8 +33,22 @@ export class CreateUserUseCase {
 
         //call repository
 
-        const createdUser = this.createUserRepository.execute(user)
+        const createdUser = await this.createUserRepository.execute(user)
 
-        return createdUser
+        const tokens = {
+            accessToken: jwt.sign(
+                { userId: user.id },
+                process.env.JWT_ACCESS_TOKEN_SECRET,
+                { expiresIn: '15m' },
+            ),
+
+            refreshToken: jwt.sign(
+                { userId: user.id },
+                process.env.JWT_REFRESH_TOKEN_SECRET,
+                { expiresIn: '30d' },
+            ),
+        }
+
+        return { ...createdUser, tokens }
     }
 }
