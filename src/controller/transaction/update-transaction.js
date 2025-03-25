@@ -4,7 +4,9 @@ import {
     checkIfIdIsValid,
     ok,
     badRequest,
+    forbidden,
 } from '../helpers/index.js'
+import { ForbiddenError } from '../../errors/users.js'
 import { ZodError } from 'zod'
 import { updateTransactionSchema } from '../../schemas/index.js'
 
@@ -34,6 +36,10 @@ export class UpdateTransactionController {
                 return badRequest({
                     message: error.errors[0].message,
                 })
+            }
+
+            if (error instanceof ForbiddenError) {
+                return forbidden()
             }
             console.error(error)
             return serverError()
