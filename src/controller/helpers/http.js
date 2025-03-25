@@ -38,3 +38,10 @@ export const forbidden = () => ({
         message: 'Forbidden',
     },
 })
+
+export const invalidPassword = () => ({
+    statusCode: 401,
+    body: {
+        message: 'Invalid Password',
+    },
+})

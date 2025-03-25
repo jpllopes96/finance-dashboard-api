@@ -3,7 +3,7 @@ import {
     notFound,
     ok,
     serverError,
-    unauthorized,
+    invalidPassword,
 } from '../helpers/index.js'
 import { InvalidPasswordError, UserNotFoundError } from '../../errors/users.js'
 import { loginSchema } from '../../schemas/index.js'
@@ -31,7 +31,7 @@ export class LoginUserController {
                 })
             }
             if (error instanceof InvalidPasswordError) {
-                return unauthorized()
+                return invalidPassword()
             }
 
             if (error instanceof UserNotFoundError) {

@@ -13,7 +13,8 @@ export class LoginUserUseCase {
             throw new UserNotFoundError()
         }
 
-        const isPasswordValid = bcrypt.compare(password, user.password)
+        const isPasswordValid = await bcrypt.compare(password, user.password)
+
         if (!isPasswordValid) {
             throw new InvalidPasswordError()
         }
